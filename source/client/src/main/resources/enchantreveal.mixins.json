@@ -1,0 +1,7 @@
+{
+  "required": true,
+  "package": "fi.zoniboy.enchantreveal.client.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "client": ["EnchantmentScreenMixin"],
+  "injectors": {"defaultRequire": 1}
+}

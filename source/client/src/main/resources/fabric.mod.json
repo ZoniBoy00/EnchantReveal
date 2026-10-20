@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "enchantreveal",
+  "version": "1.0.0",
+  "name": "EnchantReveal",
+  "description": "Full enchanting results in the original tooltip, supplied by the companion Paper plugin.",
+  "authors": ["ZoniBoy0"],
+  "environment": "client",
+  "entrypoints": {"client": ["fi.zoniboy.enchantreveal.client.EnchantRevealClient"]},
+  "mixins": ["enchantreveal.mixins.json"],
+  "depends": {
+    "fabricloader": ">=0.18.4",
+    "minecraft": ["26.1.2", "26.2", "26.3"],
+    "java": ">=25",
+    "fabric-networking-api-v1": "*"
+  }
+}
