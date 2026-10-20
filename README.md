@@ -236,3 +236,8 @@ client. No in-game confirmation is claimed for 26.1.2 or 26.3.
 Version **1.0.0** is the initial repository release. It renumbers the previously
 tested development build: program class files and wire protocol remain unchanged.
 The protocol version is tracked separately from the plugin/mod release version.
+
+## License
+
+EnchantReveal is licensed under the [MIT License](LICENSE).
+Copyright (c) 2026 ZoniBoy00.

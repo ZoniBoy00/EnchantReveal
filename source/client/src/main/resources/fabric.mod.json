@@ -5,6 +5,7 @@
   "name": "EnchantReveal",
   "description": "Full enchanting results in the original tooltip, supplied by the companion Paper plugin.",
   "authors": ["ZoniBoy0"],
+  "license": "MIT",
   "environment": "client",
   "entrypoints": {"client": ["fi.zoniboy.enchantreveal.client.EnchantRevealClient"]},
   "mixins": ["enchantreveal.mixins.json"],

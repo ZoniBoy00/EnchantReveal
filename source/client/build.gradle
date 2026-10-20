@@ -13,3 +13,8 @@ dependencies {
 sourceSets.main.java.srcDir '../shared/src/main/java'
 java { toolchain.languageVersion = JavaLanguageVersion.of(25) }
 tasks.withType(JavaCompile).configureEach { options.release = 25 }
+
+// Include the project license in the distributed client JAR.
+tasks.named('jar') {
+    from('../../LICENSE')
+}
