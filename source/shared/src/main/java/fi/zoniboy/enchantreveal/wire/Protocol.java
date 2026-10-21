@@ -3,6 +3,7 @@ package fi.zoniboy.enchantreveal.wire;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /** Small, versioned protocol shared by the Paper plugin and Fabric client. */
 public final class Protocol {
@@ -11,11 +12,12 @@ public final class Protocol {
     public static final int VERSION = 1;
     public static final int REQUEST_BYTES = 20;
     public static final int MAX_BYTES = 16384;
+    private static final Pattern KEY = Pattern.compile("[a-z0-9_.-]+:[a-z0-9_./-]+");
 
     public record Request(int containerId, int stateId, long nonce) {}
     public record Enchant(String key, int level) {
         public Enchant {
-            if (key == null || key.length() > 128 || !key.matches("[a-z0-9_.-]+:[a-z0-9_./-]+")
+            if (key == null || key.length() > 128 || !KEY.matcher(key).matches()
                     || level < 1 || level > 255) throw new IllegalArgumentException("Invalid enchantment");
         }
     }

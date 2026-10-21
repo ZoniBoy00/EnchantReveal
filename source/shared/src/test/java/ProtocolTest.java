@@ -33,6 +33,12 @@ public final class ProtocolTest {
         catch (IllegalArgumentException expected) { }
         try { new Protocol.Enchant("minecraft:efficiency", 0); throw new AssertionError("Invalid level accepted"); }
         catch (IllegalArgumentException expected) { }
+        try { new Protocol.Enchant("minecraft:efficiency", 256); throw new AssertionError("Oversized level accepted"); }
+        catch (IllegalArgumentException expected) { }
+        try { new Protocol.Enchant("Minecraft:Efficiency", 1); throw new AssertionError("Uppercase key accepted"); }
+        catch (IllegalArgumentException expected) { }
+        try { new Protocol.Offer(1, java.util.Collections.nCopies(33, new Protocol.Enchant("minecraft:efficiency", 1))); throw new AssertionError("Oversized offer accepted"); }
+        catch (IllegalArgumentException expected) { }
         System.out.println("PASS: wire round trips, multi-enchant preservation and malformed/truncated/oversized packets");
     }
 }

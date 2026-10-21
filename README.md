@@ -8,7 +8,7 @@ single hint ending in `...` with the complete list for the hovered offer.
 Enchanting keeps its normal probabilities, XP requirements and lapis costs.
 Nothing is printed to chat.
 
-[Download version 1.0.0](https://github.com/ZoniBoy00/EnchantReveal/releases/tag/v1.0.0)
+[Download version 1.0.1](https://github.com/ZoniBoy00/EnchantReveal/releases/tag/v1.0.1)
 
 > **Install both components.** The Paper JAR belongs on the server; the Fabric
 > JAR and a matching Fabric API belong on each player's Minecraft client.
@@ -53,8 +53,8 @@ Get these two files from [Releases](https://github.com/ZoniBoy00/EnchantReveal/r
 
 | File | Install location |
 | --- | --- |
-| `EnchantReveal-Paper-1.0.0.jar` | Paper server's `plugins/` folder |
-| `EnchantReveal-Fabric-1.0.0.jar` | Minecraft client's `mods/` folder |
+| `EnchantReveal-Paper-1.0.1.jar` | Paper server's `plugins/` folder |
+| `EnchantReveal-Fabric-1.0.1.jar` | Minecraft client's `mods/` folder |
 
 GitHub's automatically generated **Source code** archives are for building the
 project; they are not the ready-to-install JARs. Do not put the Paper JAR in
@@ -64,7 +64,7 @@ project; they are not the ready-to-install JARs. Do not put the Paper JAR in
 
 1. Stop the Paper server.
 2. Remove any older EnchantReveal JAR from `plugins/`. Keep only one version.
-3. Copy `EnchantReveal-Paper-1.0.0.jar` into `plugins/`.
+3. Copy `EnchantReveal-Paper-1.0.1.jar` into `plugins/`.
 4. Start the server and check that EnchantReveal enables without an exception.
 
 No Fabric installation or Fabric API is needed on the server. There are no
@@ -80,7 +80,7 @@ plugin-manager loading and `/reload` have not been tested for this project.
 1. Install [Fabric Loader](https://fabricmc.net/use/installer/) for your exact
    Minecraft version, or select the corresponding Fabric instance in your launcher.
 2. Install [Fabric API](https://modrinth.com/mod/fabric-api) for that same version.
-3. Put `EnchantReveal-Fabric-1.0.0.jar` in that instance's `mods/` folder.
+3. Put `EnchantReveal-Fabric-1.0.1.jar` in that instance's `mods/` folder.
 4. Restart Minecraft and launch the Fabric instance.
 5. Join the Paper server with the companion plugin installed.
 
@@ -128,8 +128,10 @@ changes the player's enchantment seed nor spends XP or lapis.
 ### Performance and data handling
 
 - No repeating server task or scan of online players.
-- Requests from one player in the same tick are merged into one preview job.
-  That job calculates all three offers.
+- Requests from one player in the same tick are merged into one preview job, and
+  a player's jobs are spaced at least 4 ticks apart. That job calculates all three offers.
+- A failure for one request is logged (at most once a minute) and skipped; the plugin
+  only disables itself when the server internals no longer match this build.
 - The client reuses a valid preview rather than requesting it every frame.
 - An unanswered request can retry twice, with 20 client ticks between attempts.
 - Caches are in memory; there is no player-history file, database or telemetry.
@@ -144,12 +146,12 @@ not been measured in a controlled benchmark or large-server load test.
 
 | Symptom | What to check |
 | --- | --- |
-| The tooltip still shows only one enchantment and `...` | Confirm both 1.0.0 JARs are installed on the correct sides, restart Minecraft and the server, and verify that the launched client is the Fabric instance. |
+| The tooltip still shows only one enchantment and `...` | Confirm both 1.0.1 JARs are installed on the correct sides, restart Minecraft and the server, and verify that the launched client is the Fabric instance. |
 | Minecraft refuses to load the mod | Use Java 25, a listed Minecraft version, Fabric Loader and a matching Fabric API. Remove duplicate mod JARs. |
 | Paper disables EnchantReveal at startup | Check the server version and the exception immediately after the EnchantReveal log entry. This release accepts only 26.1.2, 26.2 and 26.3. |
 | A preview appears after a short delay | The result comes from the server. Give the connection a moment to return a matching reply. |
 | A preview never updates after a synchronization issue | Close and reopen the table, then reinsert the item. This creates a fresh screen/request state. |
-| Enchantments appear in chat | An older chat-output EnchantReveal build is still installed. Remove old copies and restart the server. Version 1.0.0 in this repository has no chat-output feature. |
+| Enchantments appear in chat | An older chat-output EnchantReveal build is still installed. Remove old copies and restart the server. Versions 1.0.0 and later in this repository have no chat-output feature. |
 | The final item differs from the preview | Check for another plugin changing `EnchantItemEvent`, custom enchanting mechanics or an incompatible version. Test without those changes. |
 | A custom enchantment does not expand | If its identifier is unknown to the client registry, the mod preserves the normal tooltip. Custom-enchantment compatibility is not guaranteed. |
 | Other players only see the usual hint | Those players need the Fabric mod and Fabric API too. The server plugin alone cannot expand a vanilla client's tooltip. |
@@ -193,13 +195,13 @@ cd source/server
 mvn clean package
 ```
 
-Output: `source/server/target/EnchantReveal-1.0.0.jar`. The release asset is the
-same plugin packaged under the clearer name `EnchantReveal-Paper-1.0.0.jar`.
+Output: `source/server/target/EnchantReveal-1.0.1.jar`. The release asset is the
+same plugin packaged under the clearer name `EnchantReveal-Paper-1.0.1.jar`.
 Paper API is a provided dependency and is not bundled into the JAR.
 
 ### Fabric client
 
-Requirements: JDK 25 and Gradle 9.7.1. This repository does not include a Gradle
+Requirements: JDK 25 and Gradle 9.8.0 or newer (required by Fabric Loom 1.19.2). This repository does not include a Gradle
 wrapper; `gradle` must be available on your PATH.
 
 ```sh
@@ -207,7 +209,7 @@ cd source/client
 gradle build
 ```
 
-Output: `source/client/build/libs/EnchantReveal-Fabric-1.0.0.jar`.
+Output: `source/client/build/libs/EnchantReveal-Fabric-1.0.1.jar`.
 The default development target is Minecraft 26.1.2 with Fabric API
 `0.155.3+26.1.2`. If changing the development target, update both properties in
 `source/client/gradle.properties` together. The distributed universal client was
@@ -236,6 +238,17 @@ client. No in-game confirmation is claimed for 26.1.2 or 26.3.
 Version **1.0.0** is the initial repository release. It renumbers the previously
 tested development build: program class files and wire protocol remain unchanged.
 The protocol version is tracked separately from the plugin/mod release version.
+
+### Changelog
+
+**1.0.1** — The wire protocol is unchanged, so 1.0.0 and 1.0.1 components can be mixed.
+- Server: a failure for a single request is logged and skipped instead of disabling the
+  plugin; it only disables itself when the server internals no longer match this build.
+- Server: a player's preview calculations are spaced at least 4 ticks apart, and the
+  per-player state is released when the player leaves.
+- Client: a late reply to an earlier attempt for the same item and offers is accepted.
+- Protocol: the enchantment key pattern is compiled once; more validation tests.
+- Metadata: the author is `ZoniBoy00` in `plugin.yml` and `fabric.mod.json`.
 
 ## License
 

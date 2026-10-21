@@ -1,6 +1,6 @@
 name: EnchantReveal
-version: 1.0.0
+version: 1.0.1
 main: fi.zoniboy.enchantreveal.EnchantReveal
 api-version: '26.1'
 description: Sends native enchanting previews to the EnchantReveal Fabric client.
-author: ZoniBoy0
+author: ZoniBoy00

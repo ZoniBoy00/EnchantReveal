@@ -21,6 +21,7 @@ public final class PreviewState {
     private Snapshot requested;
     private Protocol.Preview received;
     private long nonce;
+    private long firstNonce;
     private int waitingTicks;
     private int attempts;
 
@@ -50,6 +51,7 @@ public final class PreviewState {
             requested = new Snapshot(menu);
             received = null;
             attempts = 0;
+            firstNonce = nextNonce + 1;
             send(menu);
         } else if (received == null && attempts < 3 && ++waitingTicks >= 20) {
             send(menu);
@@ -65,7 +67,7 @@ public final class PreviewState {
 
     public void receive(EnchantmentMenu menu, Protocol.Preview preview) {
         Protocol.Request request = preview.request();
-        if (requested == null || request.nonce() != nonce || request.containerId() != menu.containerId
+        if (requested == null || request.nonce() < firstNonce || request.nonce() > nonce || request.containerId() != menu.containerId
                 || request.stateId() != menu.getStateId() || !requested.matches(menu)) return;
         for (int i = 0; i < 3; i++) if (preview.offers().get(i).requiredLevel() != menu.costs[i]) return;
         received = preview;

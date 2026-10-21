@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
   "id": "enchantreveal",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "EnchantReveal",
   "description": "Full enchanting results in the original tooltip, supplied by the companion Paper plugin.",
-  "authors": ["ZoniBoy0"],
+  "authors": ["ZoniBoy00"],
   "license": "MIT",
   "environment": "client",
   "entrypoints": {"client": ["fi.zoniboy.enchantreveal.client.EnchantRevealClient"]},
